@@ -8,7 +8,7 @@ spec:
   packageRef:
     refName: external-dns.tkgdev.failk8s.com
     versionSelection:
-      constraints: 0.8.0
+      constraints: develop
       prereleases: {}
   values:
   - secretRef:
