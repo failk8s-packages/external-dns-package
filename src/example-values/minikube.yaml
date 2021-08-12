@@ -1,0 +1,6 @@
+#! Add your values here (without ytt annotations)
+domain: example.com
+provider: aws #! TODO: Maybe allow none as well?
+aws:
+  access_key_id: XXX
+  secret_access_key: YYY
