@@ -9,7 +9,7 @@ domain: REPLACE_ME
 #! privileged_clusterrole_name:  #! In TMC clusters is: vmware-system-tmc-psp-privileged
 
 image:
-  name: k8s.gcr.io/external-dns/external-dns:v0.8.0
+  name: k8s.gcr.io/external-dns/external-dns:v0.9.0
   pullPolicy: "IfNotPresent"
 
 #! DNS provider to use
