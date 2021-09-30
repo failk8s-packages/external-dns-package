@@ -1,16 +1,27 @@
+---
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
-  name: external-dns.dev.failk8s.com.0.0.0+develop
+  annotations:
+    kbld.k14s.io/images: |
+      - origins:
+        - resolved:
+            tag: developw
+            url: quay.io/failk8s/external-dns-package:developw
+        url: quay.io/failk8s/external-dns-package@sha256:a18bb0a65ff8943e4605cd72bd4129f5a57f7dbce2306d2d9d7b0a59d74475f8
+  name: external-dns.dev.failk8s.com.developw
   namespace: kapp-controller-packaging-global
 spec:
   refName: external-dns.dev.failk8s.com
-  version: 0.0.0+develop
   template:
     spec:
+      deploy:
+      - kapp:
+          rawOptions:
+          - --wait-timeout=5m
       fetch:
       - imgpkgBundle:
-          image: quay.io/failk8s/external-dns-package:develop
+          image: quay.io/failk8s/external-dns-package@sha256:a18bb0a65ff8943e4605cd72bd4129f5a57f7dbce2306d2d9d7b0a59d74475f8
       template:
       - ytt:
           paths:
@@ -19,7 +30,4 @@ spec:
           paths:
           - '-'
           - .imgpkg/images.yml
-      deploy:
-      - kapp:
-          rawOptions:
-          - --wait-timeout=5m
+  version: developw
