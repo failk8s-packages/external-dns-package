@@ -2,8 +2,9 @@
     "registry": "quay.io/failk8s",
     "package": {
         "name": "external-dns",
-        "domain": "tkgdev.failk8s.com",
+        "domain": "dev.failk8s.com",
         "displayName": "External DNS",
-        "version": "0.8.0"
-    }
+        "version": "0.9.0"
+    },
+    "packages": []
 }
