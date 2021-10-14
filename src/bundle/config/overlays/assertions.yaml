@@ -1,11 +1,7 @@
 #@ load("@ytt:data", "data")
 #@ load("@ytt:assert", "assert")
 
-#@ if data.values.domain:
-#@   data.values.domain!="REPLACE_ME" or assert.fail("data.values.domain can not be empty or REPLACE_ME")
-#@ else:
-#@   assert.fail("data.values.domain can not be empty or REPLACE_ME")
-#@ end
+#@ data.values.domain or assert.fail("data.values.domain can not be empty")
 
 #! Assert provider
 #@ data.values.provider=="aws" or data.values.provider=="bind" or data.values.provider=="azure" or assert.fail("values.provider accepted values are: aws, bind, azure")
@@ -26,35 +22,18 @@
 
   #@ data.values.aws.txt_owner or assert.fail("values.aws.txt_owner can not be empty")
 
-  #@ if data.values.aws.access_key_id:
-  #@   data.values.aws.access_key_id!="REPLACE_ME" or assert.fail("data.values.aws.access_key_id can not be empty or REPLACE_ME")
-  #@ else:
-  #@   assert.fail("data.values.aws.access_key_id can not be empty or REPLACE_ME")
-  #@ end
-  #@ if data.values.aws.secret_access_key:
-  #@   data.values.aws.secret_access_key!="REPLACE_ME" or assert.fail("data.values.aws.secret_access_key can not be empty or REPLACE_ME")
-  #@ else:
-  #@   assert.fail("data.values.aws.secret_access_key can not be empty or REPLACE_ME")
-  #@ end
+  #@ data.values.aws.access_key_id or assert.fail("data.values.aws.access_key_id can not be empty")
+  #@ data.values.aws.secret_access_key or assert.fail("data.values.aws.secret_access_key can not be empty")
 #@ end
 
 #@ if data.values.provider=="bind":
   #@ data.values.bind.txt_owner or assert.fail("values.bind.txt_owner can not be empty")
 
-  #@ if data.values.bind.host:
-  #@   data.values.bind.host!="REPLACE_ME" or assert.fail("data.values.bind.host can not be empty or REPLACE_ME")
-  #@ else:
-  #@   assert.fail("data.values.bind.host can not be empty or REPLACE_ME")
-  #@ end
+  #@ data.values.bind.host or assert.fail("data.values.bind.host can not be empty")
 
   #@ data.values.bind.txt_owner or assert.fail("values.bind.txt_owner can not be empty")
 
-  #@ if data.values.bind.tsig.secret:
-  #@   data.values.bind.tsig.secret!="REPLACE_ME" or assert.fail("values.bind.tsig.secret can not be empty or REPLACE_ME")
-  #@ else:
-  #@   assert.fail("values.bind.tsig.secret can not be empty or REPLACE_ME")
-  #@ end
-
+  #@ data.values.bind.tsig.secret or assert.fail("values.bind.tsig.secret can not be empty")
 #@ end
 
 #@ if data.values.provider=="azure":

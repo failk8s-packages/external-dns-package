@@ -2,7 +2,7 @@
 #@ load("@ytt:data", "data")
 #@ load("@ytt:base64", "base64")
 
-#@ if/end data.values.provider=="aws":
+#@ if data.values.provider=="aws":
 
 ---
 apiVersion: v1
@@ -27,11 +27,11 @@ spec:
         args:
           - --provider=aws
           - #@ "--aws-zone-type={}".format(data.values.aws.zone_type or "")
-          #@ if/end data.values.target.service==True:
+          #@ if/end data.values.target.service:
           - --source=service
-          #@ if/end data.values.target.ingress==True:
+          #@ if/end data.values.target.ingress:
           - --source=ingress
-          #@ if/end data.values.target.contour==True:
+          #@ if/end data.values.target.contour:
           - --source=contour-httpproxy
           - #@ "--policy={}".format(data.values.aws.policy or "")
           - --aws-prefer-cname
@@ -50,3 +50,5 @@ spec:
               secretKeyRef:
                 name: route53-externaldns-iam
                 key: aws_secret_access_key
+
+#@ end

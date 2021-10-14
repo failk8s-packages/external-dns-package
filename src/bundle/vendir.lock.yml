@@ -2,10 +2,10 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
-      commitTitle: 'Merge pull request #2197 from k0da/regr_fix...'
-      sha: a6bc7555d07aa75332219ee50616626502c9fa31
+      commitTitle: 'Merge pull request #2342 from kubernetes-sigs/raffo/remove-readme-version...'
+      sha: 69ed2ddfe714a558c1c2d79886bd8588210ccc7b
       tags:
-      - v0.9.0
+      - v0.10.0
     path: .
   path: config/upstream
 kind: LockConfig
