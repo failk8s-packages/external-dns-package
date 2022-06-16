@@ -2,10 +2,10 @@
 apiVersion: imgpkg.carvel.dev/v1alpha1
 images:
 - annotations:
-    kbld.carvel.dev/id: k8s.gcr.io/external-dns/external-dns:v0.9.0
+    kbld.carvel.dev/id: k8s.gcr.io/external-dns/external-dns:v0.10.0
     kbld.carvel.dev/origins: |
       - resolved:
-          tag: v0.9.0
-          url: k8s.gcr.io/external-dns/external-dns:v0.9.0
-  image: k8s.gcr.io/external-dns/external-dns@sha256:78c0331e57f0d9fb2c0ba108d89334cc0b616843b675eaccafc85719b37e225b
+          tag: v0.10.0
+          url: k8s.gcr.io/external-dns/external-dns:v0.10.0
+  image: k8s.gcr.io/external-dns/external-dns@sha256:d9569d17d224513f252520d3c92d6519aedc40524f4395a9185c7e66de3cdab7
 kind: ImagesLock

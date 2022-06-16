@@ -1,7 +1,7 @@
 #@ load("@ytt:overlay", "overlay")
 #@ load("@ytt:data", "data")
 
-#@ if/end data.values.provider=="bind":
+#@ if data.values.provider=="bind":
 
 #@overlay/match by=overlay.subset({"kind":"Deployment", "metadata": {"name": "external-dns"}})
 #@overlay/match-child-defaults missing_ok=True
@@ -15,11 +15,11 @@ spec:
         #@overlay/replace
         args:
         - --provider=rfc2136
-        #@ if/end data.values.target.service==True:
+        #@ if/end data.values.target.service:
         - --source=service
-        #@ if/end data.values.target.ingress==True:
+        #@ if/end data.values.target.ingress:
         - --source=ingress
-        #@ if/end data.values.target.contour==True:
+        #@ if/end data.values.target.contour:
         - --source=contour-httpproxy
         - #@ "--policy={}".format(data.values.aws.policy or "")
         - #@ "--domain-filter={}".format(data.values.domain or "")
@@ -32,3 +32,5 @@ spec:
         - #@ "--rfc2136-tsig-keyname={}".format(data.values.bind.tsig.keyname)
         - --rfc2136-tsig-axfr
 #!        - --namespace=tanzu-system-service-discovery
+
+#@ end
