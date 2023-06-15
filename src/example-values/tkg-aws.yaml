@@ -5,5 +5,7 @@ target:
   ingress: True
   contour: True
 aws:
-  access_key_id: XXX
-  secret_access_key: YYY
+  auth:
+    iam:
+      access_key_id: XXX
+      secret_access_key: YYY

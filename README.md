@@ -16,14 +16,14 @@ The following configuration values can be set to customize the external-dns inst
 |-------|-------------------|-------------|-------------|
 | `namespace` | Required | **external-dns** | The namespace in which to deploy external-dns |
 | `create_namespace` | Required | **True** | Needs the namespace where external-dns will be installed to be created? |
-| `domain` | Required | <EMPTY> | The domain to use for external-dns. |
+| `domain` | Optional | <EMPTY> | If set, external-dns will only act on these domains |
 | `target.service` | Required | True | Target services for external-dns integration. When True every service with external-dns annotation will be published by external-dns |
 | `target.ingress` | Required | False | Target ingresses for external-dns integration. When True every Ingress will be published by external-dns |
 | `target.contour` | Required | False | Target contour httpproxy for external-dns integration. When True every HTTPProxy will be published by external-dns |
 | `provider` | Required | <EMPTY> | DNS provider to use: Supported values are `aws`, `bind`, `azure`|
-
-| `aws.access_key_id` | Required | AWS IAM Role's Key Id to integrate with Route53 |
-| `aws.secret_access_key` | Required | AWS IAM Role's Secret Access Key to integrate with Route53 |
+| `aws.auth.irsa.role` | Required (or aws.auth.iam)| AWS IRSA IAM Role's to integrate with Route53 |
+| `aws.auth.iam.access_key_id` | Required (or aws.auth.irsa) | AWS IAM Role's Key Id to integrate with Route53 |
+| `aws.auth.iam.secret_access_key` | Required (or aws.auth.irsa) | AWS IAM Role's Secret Access Key to integrate with Route53 |
 | `...`| | |
 
 ## Usage Example
@@ -36,7 +36,7 @@ By default, only services with this annotation will be published `external-dns.a
 
 Test Route53 config:
 ```
-ytt -f src/bundle/config -v domain=apps.example.org -v provider=aws -v aws.access_key_id=EXAMPLEKEY -v aws.secret_access_key=SECRETKEY
+ytt -f src/bundle/config -v domain=apps.example.org -v provider=aws -v aws.auth.iam.access_key_id=EXAMPLEKEY -v aws.secret_access_key=SECRETKEY
 ```
 
 ## Test in minikube
@@ -87,6 +87,6 @@ kubectl get packageinstall external-dns -n external-dns-package -o yaml
 
 1. Update your [config.json](./config.json) with the package info
 2. Add [overlays](./src/bundle/config/overlays/) and [values](./src/bundle/config/values.yaml)
-3. Test your bundle: `ytt --data-values-file src/example-values/minikube.yaml  -f target/bundle/config` providing a sample values file from [example-values](./src/examples-values/)
+3. Test your bundle: `ytt --data-values-file src/example-values/minikube.yaml  -f src/bundle/config` providing a sample values file from [example-values](./src/examples-values/)
 4. Build your bundle `./hack/build.sh`
 5. Add it to the [failk8s-repo](https://github.com/failk8s-packages/failk8s-repo) and publish the new repo and test the package from there, or [test with local files](./target/test)

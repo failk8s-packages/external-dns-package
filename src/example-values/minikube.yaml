@@ -2,5 +2,7 @@
 domain: example.com
 provider: "aws" #! TODO: Maybe allow none as well?
 aws:
-  access_key_id: XXX
-  secret_access_key: YYY
+  auth:
+    iam:
+      access_key_id: XXX
+      secret_access_key: YYY
