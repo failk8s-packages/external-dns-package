@@ -1,0 +1,6 @@
+provider: aws #! Values are aws, bind, azure
+aws:
+  auth:
+    iam:
+      access_key_id: AKIARKM7D2FFCPM7MXM5
+      secret_access_key: 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

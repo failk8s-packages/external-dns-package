@@ -4,7 +4,7 @@
         "name": "external-dns",
         "domain": "dev.failk8s.com",
         "displayName": "External DNS",
-        "version": "develop"
+        "version": "0.13.5"
     },
     "packages": []
 }

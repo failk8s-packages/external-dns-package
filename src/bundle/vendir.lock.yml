@@ -2,10 +2,10 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
-      commitTitle: 'Merge pull request #2771 from kubernetes-sigs/raffo/fix-dependabot-yaml...'
-      sha: 347a2bf69f5451e303dc1c0d99972c9d1fdbdf76
+      commitTitle: 'Merge pull request #3626 from nitrocode/libssl-bump...'
+      sha: 1f6340a95c0f5a96cc5888196eb767943f96bea4
       tags:
-      - v0.12.0
+      - v0.13.5
     path: .
   path: config/upstream
 kind: LockConfig
