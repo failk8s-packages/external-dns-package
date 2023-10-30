@@ -1,19 +1,15 @@
 #@ load("@ytt:overlay", "overlay")
 #@ load("@ytt:data", "data")
 #@ load("@ytt:base64", "base64")
+#@ load("@ytt:assert", "assert")
+#@ load("defaults.star", "get_default_aws_args")
 
-#@ if data.values.provider=="aws":
+#@ if data.values.infraProvider=="aws":
 
-#@ if (data.values.aws.auth.iam.access_key_id or data.values.aws.auth.iam.secret_access_key):
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: route53-externaldns-iam
-  namespace: #@ data.values.namespace
-data:
-  aws_access_key_id: #@ base64.encode(data.values.aws.auth.iam.access_key_id)
-  aws_secret_access_key: #@ base64.encode(data.values.aws.auth.iam.secret_access_key)
+#@ (hasAwsCredsAccessKey, _) = assert.try_to(lambda: len(data.values.aws.credentials.accessKey) > 0)
+#@ (hasAwsCredsSecretKey, _) = assert.try_to(lambda: len(data.values.aws.credentials.secretKey) > 0)
+#@ if (hasAwsCredsSecretKey and not hasAwsCredsAccessKey) or (not hasAwsCredsSecretKey and hasAwsCredsAccessKey):
+#@   assert.fail("`aws.credentials.accessKey` and `aws.credentials.secretKey` must both be provided")
 #@ end
 
 #@overlay/match by=overlay.subset({"kind":"Deployment", "metadata": {"name": "external-dns"}})
@@ -23,48 +19,47 @@ spec:
   template:
     spec:
       containers:
-        #@overlay/match by=overlay.map_key("name")
+        #@overlay/match by="name"
         - name: external-dns
           #@overlay/replace
-          args:
-            - --provider=aws
-            -  #@ "--aws-zone-type={}".format(data.values.aws.zone_type or "")
-            #@ if/end data.values.target.service:
-            - --source=service
-            #@ if/end data.values.target.ingress:
-            - --source=ingress
-            #@ if/end data.values.target.contour:
-            - --source=contour-httpproxy
-            -  #@ "--policy={}".format(data.values.aws.policy or "")
-            - --aws-prefer-cname
-            - --registry=txt
-            - --txt-prefix=txt #! disambiguates TXT records from CNAME records
-            -  #@ "--domain-filter={}".format(data.values.domain or "")
-            -  #@ "--txt-owner-id={}".format(data.values.aws.txt_owner)
-          env:
-            #@ if (data.values.aws.auth.iam.access_key_id or data.values.aws.auth.iam.secret_access_key):
+          args: #@ get_default_aws_args()
+
+#@ if hasAwsCredsAccessKey and hasAwsCredsSecretKey:
+
+#! When providing the `aws.credentials` the provider must be `aws`
+#@ if "--provider=aws" not in get_default_aws_args():
+#@   assert.fail("Use of `aws.credentials` requires using the aws provider")
+#@ end
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: external-dns-aws-values
+  namespace: #@ data.values.namespace
+type: Opaque
+data:
+  awsAccessKeyID: #@ base64.encode("{}".format(data.values.aws.credentials.accessKey))
+  awsSecretAccessKey: #@ base64.encode("{}".format(data.values.aws.credentials.secretKey))
+
+#@overlay/match by=overlay.subset({"kind":"Deployment", "metadata":{"name":"external-dns"}})
+#@overlay/match-child-defaults missing_ok=True
+---
+spec:
+  template:
+    spec:
+      containers:
+        #@overlay/match by=overlay.subset({"name": "external-dns"})
+        - env:
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
-                  name: route53-externaldns-iam
-                  key: aws_access_key_id
+                  name: external-dns-aws-values
+                  key: awsAccessKeyID
             - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: route53-externaldns-iam
-                  key: aws_secret_access_key
-            #@ end
-            #@ if data.values.aws.auth.irsa.role:
-            - name: AWS_DEFAULT_REGION
-              value: #@ data.values.aws.region
-            #@ end
+                  name: external-dns-aws-values
+                  key: awsSecretAccessKey
 #@ end
-
-#@ if data.values.aws.auth.irsa.role:
-#@overlay/match by=overlay.subset({"kind":"ServiceAccount", "metadata": {"name": "external-dns"}})
-#@overlay/match-child-defaults missing_ok=True
----
-metadata:
-  annotations:
-    eks.amazonaws.com/role-arn: #@ data.values.aws.auth.irsa.role
 #@ end

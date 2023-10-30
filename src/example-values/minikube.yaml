@@ -1,8 +1,11 @@
 #! Add your values here (without ytt annotations)
-domain: example.com
-provider: "aws" #! TODO: Maybe allow none as well?
+#! domain: example.com
+infraProvider: "custom"
 aws:
-  auth:
-    iam:
-      access_key_id: XXX
-      secret_access_key: YYY
+  credentials:
+    accessKey: XXX
+    secretKey: YYY
+deployment:
+  args:
+    - --provider=aws
+    - --source=service

@@ -2,10 +2,10 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
-      commitTitle: 'Merge pull request #3626 from nitrocode/libssl-bump...'
-      sha: 1f6340a95c0f5a96cc5888196eb767943f96bea4
+      commitTitle: 'Merge pull request #3839 from matusf/fix/pdns-tls-on...'
+      sha: 0483ffde22e60436f16be154b9fe1a388a1400d0
       tags:
-      - v0.13.5
+      - v0.13.6
     path: .
   path: config/upstream
 kind: LockConfig

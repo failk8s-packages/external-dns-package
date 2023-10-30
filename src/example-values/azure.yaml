@@ -1,0 +1,10 @@
+#! Add your values here (without ytt annotations)
+#!domain: example.com
+infraProvider: aws
+aws:
+  credentials:
+    accessKey: XXX
+    secretKey: YYY
+serviceaccount:
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/external-dns
