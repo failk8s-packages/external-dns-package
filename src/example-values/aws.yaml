@@ -1,10 +1,16 @@
 #! Add your values here (without ytt annotations)
 #!domain: example.com
 infraProvider: aws
-#! aws:
+aws:
+  args:
+    zone_type: "zone"
+    policy: "policy"
 #!   credentials:
 #!     accessKey: XXX
 #!     secretKey: YYY
 serviceaccount:
   annotations:
     eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/external-dns
+deployment:
+  securityContext:
+    runAsNonRoot: false
