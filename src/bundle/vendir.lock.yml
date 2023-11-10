@@ -2,10 +2,10 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
-      commitTitle: 'Merge pull request #3839 from matusf/fix/pdns-tls-on...'
-      sha: 0483ffde22e60436f16be154b9fe1a388a1400d0
+      commitTitle: 'Merge pull request #3991 from mloiseleur/docs/provider...'
+      sha: 9f7167fb82de53792d3853bed59ebe0b0b0ff821
       tags:
-      - v0.13.6
+      - v0.14.0
     path: .
   path: config/upstream
 kind: LockConfig
